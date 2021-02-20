@@ -1,203 +1,53 @@
 <!DOCTYPE html>
+
 <head>
-    <title>Paint</title>
-    <style>
-        body{
-            background-color: #0fffff;
-        }
-
-        #container{
-            position: absolute;
-            top:15%;
-            left:25%;
-            width:1000;
-            height:800px;
-
-        }
-
-        #canvasdiv{
-            border: 5px solid black;
-            margin-right: 30px;
-            margin-bottom: 10px;
-            float: left;
-            width:  650px;
-            height: 450px;
-        }
-
-        #canvas{
-            
-            background-color:white;
-        }
-        
-
-        #chatbox{
-            float: left;
-            width: 250px;
-            height: 450px;
-            border: 5px solid black;
-        }
-
-        #box{
-            border-bottom: black 2px solid;
-            height: 428px;
-            background-color: white;
-        }
-
-        #textarea{
-            width:97%;
-
-        }
-
-        #narzedzia{
-            background-color: white;
-            width:365px;
-            clear: both;
-            margin-bottom: 10px;
-            border-radius: 110px;
-            
-        }
-
-        #table_colors{
-            border-radius: 110px;
-            background-color:  #0fffff;
-        }
-    </style>
-
+    <title>Drawing and guessing game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jumbotron-narrow.css') }}">
 </head>
+
 <body>
-    <div id="container">
-        <div id="canvasdiv"><canvas id="canvas" width="650" height="450" ></canvas></div>
-        <div id="chatbox">
-            <div id="box">
-                
-            </div>
-            <div id="text">
-                <input type="text" id="textarea" placeholder="type..." >
-            </div>
-        </div>
-        <br>
-        <div id="narzedzia">
-            <input type="image" src="/static/pencil.png"  width="64" height="64" value="Pencil" onclick="pencil()" >
-            <input type="image" src="/static/1.png"  width="64" height="64" value="size1" onclick="size1()" >
-            <input type="image" src="/static/2.png"  width="64" height="64" value="size2" onclick="size2()" >
-            <input type="image" src="/static/3.png"  width="64" height="64" value="size3" onclick="size3()" >
-            <input type="image" src="/static/clear.png"  width="64" height="64" value="clear" onclick="cleare()" >
+    <div class="container">
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active"><a href="/">Home</a></li>
+                    <li role="presentation"><a href="/newGame">New game</a></li>
+                </ul>
+            </nav>
         </div>
 
-    
-        
-        <table id="table_colors" >
-            <td><div onclick = "color('#0000ff')" style ="border-style:solid;width:20px;height:20px;background-color:#0000ff"></div><td>
-            <td><div onclick = "color('#009fff')" style ="border-style:solid;width:20px;height:20px;background-color:#009fff"></div><td>
-            <td><div onclick = "color('#0fffff')" style ="border-style:solid;width:20px;height:20px;background-color:#0fffff"></div><td>
-            <td><div onclick = "color('#bfffff')" style ="border-style:solid;width:20px;height:20px;background-color:#bfffff"></div><td>
-            <td><div onclick = "color('#000000')" style ="border-style:solid;width:20px;height:20px;background-color:#000000"></div><td>
-            <td><div onclick = "color('#333333')" style ="border-style:solid;width:20px;height:20px;background-color:#333333"></div><td>
-            <td><div onclick = "color('#666666')" style ="border-style:solid;width:20px;height:20px;background-color:#666666"></div><td>
-            <td><div onclick = "color('#999999')" style ="border-style:solid;width:20px;height:20px;background-color:#999999"></div><td>
-            <td><div onclick = "color('#ffcc66')" style ="border-style:solid;width:20px;height:20px;background-color:#ffcc66"></div><td>
-            <td><div onclick = "color('#ffcc00')" style ="border-style:solid;width:20px;height:20px;background-color:#ffcc00"></div><td>
-            <td><div onclick = "color('#ffff00')" style ="border-style:solid;width:20px;height:20px;background-color:#ffff00"></div><td>
-            <td><div onclick = "color('#ffff99')" style ="border-style:solid;width:20px;height:20px;background-color:#ffff99"></div><td>
-            <td><div onclick = "color('#003300')" style ="border-style:solid;width:20px;height:20px;background-color:#003300"></div><td>
-            <td><div onclick = "color('#555000')" style ="border-style:solid;width:20px;height:20px;background-color:#555000"></div><td>
-            <tr>
-            <td><div onclick = "color('#00ff00')" style ="border-style:solid;width:20px;height:20px;background-color:#00ff00"></div><td>
-            <td><div onclick = "color('#99ff99')" style ="border-style:solid;width:20px;height:20px;background-color:#99ff99"></div><td>
-            <td><div onclick = "color('#f00000')" style ="border-style:solid;width:20px;height:20px;background-color:#f00000"></div><td>
-            <td><div onclick = "color('#ff6600')" style ="border-style:solid;width:20px;height:20px;background-color:#ff6600"></div><td>
-            <td><div onclick = "color('#ff9933')" style ="border-style:solid;width:20px;height:20px;background-color:#ff9933"></div><td>
-            <td><div onclick = "color('#F5DEB3')" style ="border-style:solid;width:20px;height:20px;background-color:#F5DEB3"></div><td>
-            <td><div onclick = "color('#FFFFFF')" style ="border-style:solid;width:20px;height:20px;background-color:#FFFFFF"></div><td>
-            <td><div onclick = "color('#663300')" style ="border-style:solid;width:20px;height:20px;background-color:#663300"></div><td>
-            <td><div onclick = "color('#cc6600')" style ="border-style:solid;width:20px;height:20px;background-color:#cc6600"></div><td>
-            <td><div onclick = "color('#DEB887')" style ="border-style:solid;width:20px;height:20px;background-color:#DEB887"></div><td>
-            <td><div onclick = "color('#aa0fff')" style ="border-style:solid;width:20px;height:20px;background-color:#aa0fff"></div><td>
-            <td><div onclick = "color('#cc66cc')" style ="border-style:solid;width:20px;height:20px;background-color:#cc66cc"></div><td>
-            <td><div onclick = "color('#ff66ff')" style ="border-style:solid;width:20px;height:20px;background-color:#ff66ff"></div><td>
-            <td><div onclick = "color('#ff99ff')" style ="border-style:solid;width:20px;height:20px;background-color:#ff99ff"></div><td>
-        
-        </table>
-        
+        <div class="jumbotron">
+            <h2>Start a new game!</h2>
+            <form class="form-group" method="POST" action="{{ url_for('createGame') }}">
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="guessingTime">Guessing Time</label>
+                        </div>
+                        <select class="custom-select" id="guessingTime">
+                            <option selected>{{params.minGuessingTime}}</option>
+                            {% for o in range(params.minGuessingTime +  params.timeStep, params.maxGuessingTime, params.timeStep) %}
+                            <option value="{{o}}">{{o}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="aname" name="inputName" id="inputName" class="form-control"
+                            placeholder="Type your name here" aria-label="Your name" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-secondary btn-success">Start a new
+                                game</button>
+                        </div>
+                    </div>
+                    <p class="lead"></p>
+                </div>
+            </form>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; JJ & JK & SM 2021</p>
+        </footer>
+
     </div>
-
 </body>
-<script>
-
-//paint
-jsondata=[]
-var canvas = document.getElementById("canvas");
-var context=canvas.getContext('2d');
-context.lineWidth=1;
-
-var rect = canvas.getBoundingClientRect();
-var offsetX = rect.left;
-var offsetY = rect.top;
-
-function cleare(){
-jsondata=[]
-context.clearRect(0, 0, 650, 450);
-}
-
-function size1(){
-    context.lineWidth=1;
-}
-
-function size2(){
-    context.lineWidth=5;
-}
-
-function size3(){
-    context.lineWidth=10;
-}
-
-function pencil(){
-canvas.onmousedown=pencildown;
-canvas.onmouseup=pencilup;
-canvas.onmousemove=pencilmove;
-function pencildown(e){
-x=e.x;
-x=(x-offsetX);
-y=e.y;
-y=(y-offsetY);
-draw=true;
-}
-function pencilup(){
-draw=false;
-}
-function pencilmove(event){
-if (draw){
-   a =event.x;
-   a=(a-offsetX);
-   b =event.y;
-   b=(b-offsetY);
-   context.beginPath();
-   context.moveTo(x,y);
-   context.lineTo(a,b);
-   context.stroke();
-   context.closePath();
-   jsondata.push({"Type":"pencil", "X0":x,"Y0":y,"X1":a,"Y1":b,"width":context.lineWidth,"color":context.strokeStyle})
-   x=a;
-   y=b;
- }}}
-
- function color(colour){
-context.strokeStyle=colour;
-context.fillStyle=colour;
-}
-
-//czat
-var v;
-
-const node = document.getElementsByTagName("input")[0];
-node.addEventListener("keyup", function(event)  {
-    if (event.key === "Enter") {  
-        document.getElementById('box').innerHTML = "seba: "  + node.value;
-        text = document.getElementById('textarea');
-        text.value='';
-    }
-});
-
-</script>
-
-</html>
