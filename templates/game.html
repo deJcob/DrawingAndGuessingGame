@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Paint</title>
+    <title>Draw and guess!</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jumbotron-narrow.css') }}">
     <style>
         #gameContainer {
             position: absolute;
             top: 10%;
-            left: 18%;
-            width: 1000;
+            left: 5%;
+            width: 1300;
             height: 730px;
         }
 
         #canvasdiv {
             border: 2px solid black;
             margin-right: 30px;
+            margin-left: 30px;
             margin-bottom: 10px;
             float: left;
             width: 650px;
@@ -27,20 +28,30 @@
         }
 
         #chatbox {
+            float: right;
+            width: 250px;
+            height: 450px;
+            border: 2px solid black;
+            background-color: white;
+            position: relative;
+        }
+
+        #box {
+            text-align: left;
+            height: 430px;
+            padding-left: 5px;
+        }
+
+        #playersList {
             float: left;
             width: 250px;
             height: 450px;
             border: 2px solid black;
-        }
-
-        #box {
-            border-bottom: black 2px solid;
-            height: 428px;
             background-color: white;
         }
 
         #textarea {
-            width: 97%;
+            width: 100%;
         }
 
         #narzedzia {
@@ -49,6 +60,13 @@
             clear: both;
             margin-bottom: 10px;
             border-radius: 110px;
+        }
+
+        #text {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            left: 0;
         }
 
         #table_colors {
@@ -70,14 +88,40 @@
         </div>
 
         <div class="jumbotron" id="gameContainer">
+            <div id="playersList">
+                <h5>Players</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nick</th>
+                            <th scope="col">Points</th>
+                            <th scope="col">Drawing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in players %}
+                        <tr>
+                            <td>{{player.nickName}}</td>
+                            <td>{{player.points}}</td>
+                            {% if player.isDrawing %}
+                            <td>draw</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %}
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <div id="canvasdiv"><canvas id="canvas" width="650" height="450"></canvas></div>
             <div id="chatbox">
                 <div id="box">
 
                 </div>
                 <div id="text">
-                    <input type="text" id="textarea" placeholder="type...">
+                    <input type="text" class="form-control" id="textarea" placeholder="type...">
                 </div>
+
             </div>
             <br>
             <div class="row" id="narzedzia">

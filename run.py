@@ -1,4 +1,5 @@
 from flask import *
+import sys
 #import psycopg2
 
 class webApp:
@@ -7,7 +8,13 @@ class webApp:
 	maxGuessingTime = 120
 	timeStep = 10
 
+class Player:
+	nickName = "player"
+	points = 0
+	isDrawing = False
+
 app = Flask(__name__)
+players = []
 
 @app.route('/')
 def home():
@@ -20,12 +27,13 @@ def newGame():
 
 @app.route('/game', defaults={'game_id': None})
 @app.route('/game/<game_id>') 					# This normal user link to the specified game
-def game(game_id = -1):								# TODO: Check here if the game exists in database
+def game(game_id = None):								# TODO: Check here if the game exists in database
 
 	if (game_id == None):					# TODO: Find newest game ID and route to this game
-		game_id = 1 
-	
-	return render_template('game.html', gameID=game_id)
+		game_id = 1
+	players = [] # list of players, pull it from database
+	print('Players count ' + str(len(players)), file=sys.stdout)
+	return render_template('game.html', gameID=game_id, players=players)
 
 
 @app.route('/createGame', methods=['GET', 'POST'])   			 # This is game creator
