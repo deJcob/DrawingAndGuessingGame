@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Drawing and guessing game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jumbotron-narrow.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active"><a href="/">Home</a></li>
+                    <li role="presentation"><a href="/newGame">New game</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="jumbotron">
+            <h1>Drawing and guessing game</h1>
+            <p class="lead"></p>
+            <p>
+                <a class="btn btn-lg btn-success" href="newGame" role="button">Start a new game</a>
+                <h3>or</h3>
+                <div class="input-group mb-3">
+                    <input type="aname" name="inputName" id="inputName" class="form-control"
+                        placeholder="Type your name here" aria-label="Your name" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <a class="btn btn-lg btn-success" href="game" role="button">Play</a>
+                    </div>
+                </div>
+
+            </p>
+
+
+        </div>
+
+        <footer class="footer">
+            <p>&copy; JJ & JK & SM 2021</p>
+        </footer>
+
+    </div>
+</body>
