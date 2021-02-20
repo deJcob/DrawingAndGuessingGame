@@ -58,8 +58,8 @@
             background-color: white;
             width: 365px;
             clear: both;
+            display: inline-block;
             margin-bottom: 10px;
-            border-radius: 110px;
         }
 
         #text {
@@ -70,7 +70,10 @@
         }
 
         #table_colors {
-            border-radius: 110px;
+            padding: 12px;
+            display: inline-block;
+            background-color: white;
+            margin-bottom: -4px;
         }
     </style>
 
@@ -124,6 +127,7 @@
 
             </div>
             <br>
+
             <div class="row" id="narzedzia">
                 <input type="image" src="/static/img/pencil.png" width="64" height="64" value="Pencil"
                     onclick="pencil()">
@@ -131,10 +135,8 @@
                 <input type="image" src="/static/img/2.png" width="64" height="64" value="size2" onclick="size2()">
                 <input type="image" src="/static/img/3.png" width="64" height="64" value="size3" onclick="size3()">
                 <input type="image" src="/static/img/clear.png" width="64" height="64" value="clear" onclick="cleare()">
+
             </div>
-
-
-
             <table id="table_colors">
                 <td>
                     <div onclick="color('#0000ff')"
@@ -195,62 +197,77 @@
                     <tr>
                         <td>
                             <div onclick="color('#00ff00')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#00ff00"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#00ff00">
+                            </div>
                         <td>
                         <td>
                             <div onclick="color('#99ff99')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#99ff99"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#99ff99">
+                            </div>
                         <td>
                         <td>
                             <div onclick="color('#f00000')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#f00000"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#f00000">
+                            </div>
                         <td>
                         <td>
                             <div onclick="color('#ff6600')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#ff6600"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#ff6600">
+                            </div>
                         <td>
                         <td>
                             <div onclick="color('#ff9933')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#ff9933"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#ff9933">
+                            </div>
                         <td>
                         <td>
                             <div onclick="color('#F5DEB3')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#F5DEB3"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#F5DEB3">
+                            </div>
                         <td>
                         <td>
                             <div onclick="color('#FFFFFF')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#FFFFFF"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#FFFFFF">
+                            </div>
                         <td>
                         <td>
                             <div onclick="color('#663300')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#663300"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#663300">
+                            </div>
                         <td>
                         <td>
                             <div onclick="color('#cc6600')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#cc6600"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#cc6600">
+                            </div>
                         <td>
                         <td>
                             <div onclick="color('#DEB887')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#DEB887"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#DEB887">
+                            </div>
                         <td>
                         <td>
                             <div onclick="color('#aa0fff')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#aa0fff"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#aa0fff">
+                            </div>
                         <td>
                         <td>
                             <div onclick="color('#cc66cc')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#cc66cc"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#cc66cc">
+                            </div>
                         <td>
                         <td>
                             <div onclick="color('#ff66ff')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#ff66ff"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#ff66ff">
+                            </div>
                         <td>
                         <td>
                             <div onclick="color('#ff99ff')"
-                                style="border-style:solid;width:20px;height:20px;background-color:#ff99ff"></div>
+                                style="border-style:solid;width:20px;height:20px;background-color:#ff99ff">
+                            </div>
                         <td>
 
             </table>
+
             <form>
                 <div class="input-group">
                     <input type="text" class="form-control" value="localhost:5000/game/{{gameID}}"
