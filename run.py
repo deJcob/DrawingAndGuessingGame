@@ -1,5 +1,6 @@
 from flask import *
 import sys
+import Game
 #import psycopg2
 
 class webApp:
@@ -8,10 +9,6 @@ class webApp:
 	maxGuessingTime = 120
 	timeStep = 10
 
-class Player:
-	nickName = "player"
-	points = 0
-	isDrawing = False
 
 app = Flask(__name__)
 players = []
