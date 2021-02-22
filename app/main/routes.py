@@ -37,8 +37,9 @@ def game(game_id=None):  # TODO: Check here if the game exists in database
 
     if (game_id == None):  # TODO: Find newest game ID and route to this game
         game_id = 1
+        game_id = session.get('game_id', '')
+
     players = []  # list of players, pull it from database
-    game_id = session.get('game_id', '')
     name = session.get('name', '')
     if name == '' or game_id == '':
         return redirect(url_for('main.home'))
