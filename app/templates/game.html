@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Draw and guess!</title>
+    <title>Draw and guess! Game no {{ game_id }} </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jumbotron-narrow.css') }}">
     <style>
@@ -77,6 +77,41 @@
         }
     </style>
 
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket;
+        $(document).ready(function(){
+            socket = io.connect('http://' + document.domain + ':' + location.port + '/game');
+            socket.on('connect', function() {
+                socket.emit('joined', {});
+            });
+            socket.on('status', function(data) {
+                $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
+                $('#chat').scrollTop($('#chat')[0].scrollHeight);
+            });
+            socket.on('message', function(data) {
+                $('#chat').val($('#chat').val() + data.msg + '\n');
+                $('#chat').scrollTop($('#chat')[0].scrollHeight);
+            });
+            $('#textarea').keypress(function(e) {
+                var code = e.keyCode || e.which;
+                if (code == 13) {
+                    text = $('#textarea').val();
+                    $('#textarea').val('');
+                    socket.emit('text', {msg: text});
+                }
+            });
+        });
+        function leave_room() {
+            socket.emit('left', {}, function() {
+                socket.disconnect();
+
+                // go back to the login page
+                window.location.href = "{{ url_for('main.home') }}";
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -84,7 +119,7 @@
         <div class="header">
             <nav>
                 <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="/">Home</a></li>
+                    <li role="presentation" onclick="leave_room();" class="active"><a href="/">Home</a></li>
                     <li role="presentation"><a href="/newGame">New game</a></li>
                 </ul>
             </nav>
@@ -119,6 +154,7 @@
             <div id="canvasdiv"><canvas id="canvas" width="650" height="450"></canvas></div>
             <div id="chatbox">
                 <div id="box">
+                    <textarea id="chat"></textarea>
 
                 </div>
                 <div id="text">
@@ -126,41 +162,6 @@
                 </div>
 
             </div>
-<!--            <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-        <script type="text/javascript" charset="utf-8">
-            var socket;
-            $(document).ready(function(){
-                socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
-                socket.on('connect', function() {
-                    socket.emit('joined', {});
-                });
-                socket.on('status', function(data) {
-                    $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
-                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
-                });
-                socket.on('message', function(data) {
-                    $('#chat').val($('#chat').val() + data.msg + '\n');
-                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
-                });
-                $('#text').keypress(function(e) {
-                    var code = e.keyCode || e.which;
-                    if (code == 13) {
-                        text = $('#text').val();
-                        $('#text').val('');
-                        socket.emit('text', {msg: text});
-                    }
-                });
-            });
-            function leave_room() {
-                socket.emit('left', {}, function() {
-                    socket.disconnect();
-
-                    // go back to the login page
-                    window.location.href = "{{ url_for('home') }}";
-                });
-            }
-        </script>-->
             <br>
 
             <div class="row" id="narzedzia">
@@ -305,8 +306,8 @@
 
             <form>
                 <div class="input-group">
-                    <input type="text" class="form-control" value="localhost:5000/game/{{gameID}}"
-                        placeholder="localhost:5000/game/{{gameID}}" id="copy-input">
+                    <input type="text" class="form-control" value="localhost:5000/game/{{game_id}}"
+                        placeholder="localhost:5000/game/{{game_id}}" id="copy-input">
                     <span class="input-group-btn">
                         <button onclick="tooltip()" class="btn btn-default" type="button" id="copy-button"
                             data-toggle="tooltip" data-placement="button" title="Copy to Clipboard">
@@ -400,17 +401,6 @@
         context.fillStyle = colour;
     }
 
-    //czat
-    var v;
-
-    const node = document.getElementsByTagName("input")[0];
-    node.addEventListener("keyup", function (event) {
-        if (event.key === "Enter") {
-            document.getElementById('box').innerHTML = "{{ name }}: " + node.value;
-            text = document.getElementById('textarea');
-            text.value = '';
-        }
-    });
     // Copy game link
     function tooltip() {
         /* Get the text field */
