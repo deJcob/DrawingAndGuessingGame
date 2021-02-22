@@ -9,7 +9,7 @@ def joined(message):
     A status message is broadcast to all people in the room."""
     game_id = session.get('game_id')
     join_room(game_id)
-    emit('status', {'msg': session.get('name') + ' has entered the room.'}, game_id=game_id)
+    emit('status', {'msg': session.get('name') + ' has entered the room.'}, room=game_id)
 
 
 @socketio.on('text', namespace='/game')
@@ -17,7 +17,7 @@ def text(message):
     """Sent by a client when the user entered a new message.
     The message is sent to all people in the room."""
     game_id = session.get('game_id')
-    emit('message', {'msg': session.get('name') + ':' + message['msg']}, game_id=game_id)
+    emit('message', {'msg': session.get('name') + ':' + message['msg']}, room=game_id)
 
 
 @socketio.on('left', namespace='/game')
@@ -26,5 +26,5 @@ def left(message):
     A status message is broadcast to all people in the room."""
     game_id = session.get('game_id')
     leave_room(game_id)
-    emit('status', {'msg': session.get('name') + ' has left the room.'}, game_id=game_id)
+    emit('status', {'msg': session.get('name') + ' has left the room.'}, room=game_id)
 
