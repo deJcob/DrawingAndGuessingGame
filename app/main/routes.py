@@ -2,6 +2,7 @@ from flask import session, redirect, url_for, render_template, request
 from . import main
 from .forms import LoginForm
 
+
 class webApp:
     url = "localhost:5000"
     minGuessingTime = 60
@@ -10,6 +11,7 @@ class webApp:
 
 
 players = []
+
 
 @main.route('/', methods=['GET', 'POST'])
 def home():
@@ -36,7 +38,6 @@ def newGame():
 def game(game_id=None):  # TODO: Check here if the game exists in database
 
     if (game_id == None):  # TODO: Find newest game ID and route to this game
-        game_id = 1
         game_id = session.get('game_id', '')
 
     players = []  # list of players, pull it from database
@@ -52,4 +53,3 @@ def createGame():
     gusessingTimeSelecteds = request.form.get('guessingTime')  # TODO : in future game should use it :)
     _gameId = 1
     return game(_gameId)
-
