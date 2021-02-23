@@ -1,6 +1,7 @@
 from flask import session, redirect, url_for, render_template, request
 from . import main
 from .forms import LoginForm
+import sqlite3
 
 
 class webApp:
@@ -53,3 +54,27 @@ def createGame():
     gusessingTimeSelecteds = request.form.get('guessingTime')  # TODO : in future game should use it :)
     _gameId = 1
     return game(_gameId)
+
+DATABASE = 'database.db'
+
+@main.route('/create_db', methods=['GET', 'POST'])
+def create_db():
+    # Połączenie sie z bazą danych
+    conn = sqlite3.connect(DATABASE)
+    # Stworzenie tabeli w bazie danych
+    conn.execute('CREATE TABLE words (id INTEGER PRIMARY KEY, word TEXT')
+    conn.execute('CREATE TABLE games (id INTEGER PRIMARY KEY, number_of_players INTEGER , time INTEGER)')
+    #Dodanie pozycji do tabeli
+    cur = conn.cursor()
+    cur.execute("INSERT INTO words (id, word) VALUES (1, 'jabłko')")
+    cur.execute("INSERT INTO words (id, word) VALUES (2, 'jajko')")
+    cur.execute("INSERT INTO words (id, word) VALUES (3, 'słońce')")
+    cur.execute("INSERT INTO words (id, word) VALUES (4, 'kusza')")
+    cur.execute("INSERT INTO words (id, word) VALUES (5, 'domek')")
+    cur.execute("INSERT INTO words (id, word) VALUES (7, 'pies')")
+    cur.execute("INSERT INTO words (id, word) VALUES (8, 'lustro')")
+    cur.execute("INSERT INTO words (id, word) VALUES (9, 'drzewo')")
+    cur.execute("INSERT INTO words (id, word) VALUES (10, 'gruszka')")
+    conn.commit()
+    # Zakończenie połączenia z bazą danych
+    conn.close()
