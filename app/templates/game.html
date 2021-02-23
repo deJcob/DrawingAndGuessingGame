@@ -310,7 +310,10 @@
                 $('#chat').scrollTop($('#chat')[0].scrollHeight);
             });
             socket.on('coordinates', function(data) {
-                drawFromSocket(data.x, data.y, data.a, data.b);
+                drawFromSocket(data.x, data.y, data.a, data.b, data.lineWidth, data.strokeStyle);
+             });
+            socket.on('clear', function(data) {
+                clearFromSocket();
              });
             $('#textarea').keypress(function(e) {
                 var code = e.keyCode || e.which;
@@ -343,6 +346,7 @@
     function cleare() {
         jsondata = []
         context.clearRect(0, 0, 650, 450);
+        socket.emit('clear', {msg: "clearAll"});
     }
 
     function size1() {
@@ -401,12 +405,31 @@
         }
     }
 
-    function drawFromSocket(x, y, a, b){
+    function drawFromSocket(x, y, a, b, lineWidth, strokeStyle){
+        context.lineWidth = lineWidth;
+        context.strokeStyle = strokeStyle;
         context.beginPath();
         context.moveTo(x, y);
         context.lineTo(a, b);
         context.stroke();
         context.closePath();
+    }
+
+    function clearFromSocket(){
+        context.clearRect(0, 0, 650, 450);
+    }
+
+    function setSizeFromSocket(size){
+        switch (size) {
+            case 3:
+                context.lineWidth = 10;
+                break;
+            case 2:
+                context.lineWidth = 5;
+                break;
+            default:
+                context.lineWidth = 1;
+}
     }
 
     function color(colour) {

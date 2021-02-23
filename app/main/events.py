@@ -34,6 +34,14 @@ def coordinates(message):
          room=game_id)
 
 
+@socketio.on('clear', namespace='/game')
+def clear(message):
+    """Sent by clients when they enter a room.
+    A status message is broadcast to all people in the room."""
+    game_id = session.get('game_id')
+    emit('clear', {'msg': session.get('name') + ' cleared.'}, room=game_id)
+
+
 @socketio.on('left', namespace='/game')
 def left(message):
     """Sent by clients when they leave a room.
