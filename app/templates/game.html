@@ -337,6 +337,14 @@
             socket.on('timeUpdate', function(data) {
                 $('#guessingtime').val('Time: ' + data.time);
              });
+            socket.on('word', function(data) {
+                $('#wordToGuess').val(data.word);
+             });
+            socket.on('guessed', function(data) {
+                alert(data.msg);
+                socket.emit('word', {word: 'word'});
+             });
+            socket.emit('word', {word: 'word'});
             $('#textarea').keypress(function(e) {
                 var code = e.keyCode || e.which;
                 if (code == 13) {

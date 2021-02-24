@@ -1,12 +1,17 @@
+import sqlite3
 import threading
 
-from flask import session
+from flask import session, request
 from flask_socketio import emit, join_room, leave_room
+
+from .routes import DATABASE
 from .. import socketio
 from app import *
 
 timer = int()
-
+wordIndex = int(1)
+drawer = 'Jacek'
+secretWord = ''
 
 def update_time_in_games():
     global timer
@@ -30,7 +35,6 @@ def time_update(message):
     """Sent by server every second
     A status message is broadcast to all people in the room."""
     game_id = session.get('game_id')
-    timer
     emit('timeUpdate', {'time': timer}, room=game_id)
 
 
@@ -38,8 +42,16 @@ def time_update(message):
 def text(message):
     """Sent by a client when the user entered a new message.
     The message is sent to all people in the room."""
+    global wordIndex
+    global timer
+    global secretWord
     game_id = session.get('game_id')
-    emit('message', {'msg': session.get('name') + ':' + message['msg']}, room=game_id)
+    if message['msg'] == secretWord[0][0]:
+        wordIndex += 1
+        timer = 1
+        emit('guessed', {'msg': session.get('name') + ' guessed word'}, room=game_id)
+    else:
+        emit('message', {'msg': session.get('name') + ':' + message['msg']}, room=game_id)
 
 
 @socketio.on('coordinates', namespace='/game')
@@ -71,3 +83,30 @@ def left(message):
     game_id = session.get('game_id')
     leave_room(game_id)
     emit('status', {'msg': session.get('name') + ' has left the room.'}, room=game_id)
+
+
+@socketio.on('word', namespace='/game')
+def word(message):
+    game_id = session.get('game_id')
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    cur.execute("SELECT word FROM words WHERE id=" + wordIndex.__str__())
+    exists = cur.fetchall()
+    global secretWord
+    secretWord = exists
+    name = session.get('name')
+    tempWord = ''
+    if name == 'Jacek':
+        emit('word', {'word': exists}, room=request.sid)
+    else:
+        for x in range(len(exists[0][0])):
+            tempWord += '_ '
+        emit('word', {'word': tempWord}, room=request.sid)
+
+
+@socketio.on('guessed', namespace='/game')
+def guessed(message):
+    game_id = session.get('game_id')
+    global wordIndex
+    wordIndex += 1
+    emit('guessed', {'msg': session.get('name') + ' guessed word'}, room=game_id)
