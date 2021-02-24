@@ -20,29 +20,32 @@
         <div class="jumbotron">
             <h2>Start a new game!</h2>
             <form class="form-group" method="POST" action="{{ url_for('main.createGame') }}">
-                <div class="form-group">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="guessingTime">Guessing Time</label>
+                                <div class="row justify-content-center">
+                <form class="form-inline" method="POST">
+                    <div class="form-row align-items-center">
+                        <div class="input-append">
+                             <div class="form-group row">
+                                 {{ form.hidden_tag() }}
+                                 {{ form.name.label(class='col-sm-3 col-form-label') }}
+                                <div class="col-sm-9">
+                                    {{ form.name(placeholder='Your name here', class='form-control mb-3') }}
+                                    {% for error in form.name.errors %}<br> {{ error
+                                    }} {% endfor %}
+                                </div>
+                             </div>
+                              <div class="form-group row">
+                             {{ form.waiting_time.label(class='col-sm-3 col-form-label') }}
+                              <div class="col-sm-9">
+                            {{ form.waiting_time(class='form-control mb-3') }}<br> {% for error in form.waiting_time.errors %}
+                            {{ error }}{% endfor %}
+                                </div>
+                             </div>
+                            {{ form.submit(class='btn btn-primary') }}
+
                         </div>
-                        <select class="custom-select" id="guessingTime">
-                            <option selected>{{params.minGuessingTime}}</option>
-                            {% for o in range(params.minGuessingTime +  params.timeStep, params.maxGuessingTime, params.timeStep) %}
-                            <option value="{{o}}">{{o}}</option>
-                            {% endfor %}
-                        </select>
                     </div>
-                    <div class="input-group mb-3">
-                        <input type="aname" name="inputName" id="inputName" class="form-control"
-                            placeholder="Type your name here" aria-label="Your name" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-outline-primary btn-success">Start a new
-                                game</button>
-                        </div>
-                    </div>
-                    <p class="lead"></p>
+                </form>
                 </div>
-            </form>
         </div>
 
         <footer class="footer">

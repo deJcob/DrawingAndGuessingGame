@@ -1,14 +1,7 @@
 from flask import session, redirect, url_for, render_template, request
 from . import main
-from .forms import LoginForm
-
-
-class webApp:
-    url = "localhost:5000"
-    minGuessingTime = 60
-    maxGuessingTime = 120
-    timeStep = 10
-
+from .forms import LoginForm, NewGameForm
+from Game import *
 
 players = []
 
@@ -19,7 +12,10 @@ def home():
     form = LoginForm()
     if form.validate_on_submit():
         session['name'] = form.name.data
-        session['game_id'] = form.game_id.data
+        if not form.game_id.data:
+            session['game_id'] = 1  # TODO in future get random game here
+        else:
+            session['game_id'] = form.game_id.data
         return redirect(url_for('main.game'))
     elif request.method == 'GET':
         form.name.data = session.get('name', '')
@@ -27,11 +23,19 @@ def home():
     return render_template('index.html', form=form)
 
 
-@main.route('/newGame')
+@main.route('/newGame', methods=['GET', 'POST'])
 def newGame():
-    _webApp = webApp()
-    return render_template('new.html', params=_webApp)
-
+    form = NewGameForm()
+    if form.validate_on_submit():
+        session['name'] = form.name.data
+        form.game_id.data = 1  # TODO here create new game
+        session['game_id'] = form.game_id.data
+        game = Game(waiting_time=form.waiting_time.data, game_id=form.game_id.data, creator_name=form.name.data)
+        return redirect(url_for('main.game'))
+    elif request.method == 'GET':
+        form.name.data = session.get('name', '')
+        form.game_id.data = session.get('game_id', '')
+    return render_template('new.html', form=form)
 
 @main.route('/game', defaults={'game_id': None})
 @main.route('/game/<game_id>')  # This normal user link to the specified game
@@ -40,8 +44,11 @@ def game(game_id=None):  # TODO: Check here if the game exists in database
     if (game_id == None):  # TODO: Find newest game ID and route to this game
         game_id = session.get('game_id', '')
 
-    players = []  # list of players, pull it from database
     name = session.get('name', '')
+
+    player = Player(name=name)
+    players = []  # list of players, pull it from database
+    players.append(player)
     if name == '' or game_id == '':
         return redirect(url_for('main.home'))
     return render_template('game.html', game_id=game_id, players=players, name=name)
