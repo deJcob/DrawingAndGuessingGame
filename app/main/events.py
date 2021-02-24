@@ -1,7 +1,18 @@
+import threading
+
 from flask import session
 from flask_socketio import emit, join_room, leave_room
 from .. import socketio
 from app import *
+
+timer = int()
+
+
+def update_time_in_games():
+    global timer
+    timer += 1
+    # socketio.emit('timeUpdate', {'time': timer}, room=1)
+    threading.Timer(1.0, update_time_in_games).start()
 
 
 @socketio.on('joined', namespace='/game')
@@ -10,6 +21,8 @@ def joined(message):
     A status message is broadcast to all people in the room."""
     game_id = session.get('game_id')
     join_room(game_id)
+    if timer == 0:
+        update_time_in_games()
     emit('status', {'msg': session.get('name') + ' has entered the room.'}, room=game_id)
 
 
@@ -17,9 +30,9 @@ def joined(message):
 def time_update(message):
     """Sent by server every second
     A status message is broadcast to all people in the room."""
-    game_id = 1;
-    global timer
-    emit('status', {'msg': timer}, room=game_id)
+    game_id = session.get('game_id')
+    timer
+    emit('timeUpdate', {'time': timer}, room=game_id)
 
 
 @socketio.on('text', namespace='/game')

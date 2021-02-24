@@ -101,7 +101,7 @@
 
         <div class="jumbotron" id="gameContainer">
             <div class="row">
-                <div id="guessingtime" class="col-sm-3"><h3>Time: </h3></div>
+                <input id="guessingtime" readonly class="col-sm-3"/>
                 <div id="wordToGuess" class="col-sm-6"><h3>_ _ _ _ _ _ _ _ _</h3></div>
             </div>
 
@@ -326,6 +326,9 @@
             socket.on('clear', function(data) {
                 clearFromSocket();
              });
+            socket.on('timeUpdate', function(data) {
+                $('#guessingtime').val('Time: ' + data.time);
+             });
             $('#textarea').keypress(function(e) {
                 var code = e.keyCode || e.which;
                 if (code == 13) {
@@ -440,8 +443,12 @@
                 break;
             default:
                 context.lineWidth = 1;
-}
+        }
     }
+
+    setInterval(function() {
+        socket.emit('timeUpdate', {time: 8});
+    }, 1000);
 
     function color(colour) {
         context.strokeStyle = colour;
