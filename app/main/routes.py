@@ -49,8 +49,14 @@ def game(game_id=None):  # TODO: Check here if the game exists in database
     name = session.get('name', '')
     session['game_id'] = game_id
     player = Player(name=name)
-    players = []  # list of players, pull it from database
-    players.append(player)
+    global players
+    player_exist = False
+    for tmp_player in players:
+        if tmp_player.nickName == player.nickName:
+            player_exist = True
+    if not player_exist:
+        players.append(player)
+
     if name == '' or game_id == '':
         return redirect(url_for('main.home'))
 
