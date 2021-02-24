@@ -11,7 +11,6 @@ timer = int()
 def update_time_in_games():
     global timer
     timer += 1
-    # socketio.emit('timeUpdate', {'time': timer}, room=1)
     threading.Timer(1.0, update_time_in_games).start()
 
 
