@@ -29,13 +29,13 @@ def newGame():
     form = NewGameForm()
     if form.validate_on_submit():
         session['name'] = form.name.data
-        form.game_id.data = 1  # TODO here create new game
-        session['game_id'] = form.game_id.data
-        game = Game(waiting_time=form.waiting_time.data, game_id=form.game_id.data, creator_name=form.name.data)
+        game_id = 1  # TODO here create new game
+        session['game_id'] = game_id
+        game = Game(waiting_time=form.waiting_time.data, game_id=game_id, creator_name=form.name.data)
         return redirect(url_for('main.game'))
     elif request.method == 'GET':
         form.name.data = session.get('name', '')
-        form.game_id.data = session.get('game_id', '')
+        session.clear()
     return render_template('new.html', form=form)
 
 @main.route('/game', defaults={'game_id': None})
@@ -46,7 +46,7 @@ def game(game_id=None):  # TODO: Check here if the game exists in database
         game_id = session.get('game_id', '')
 
     name = session.get('name', '')
-
+    session['game_id'] = game_id
     player = Player(name=name)
     players = []  # list of players, pull it from database
     players.append(player)
