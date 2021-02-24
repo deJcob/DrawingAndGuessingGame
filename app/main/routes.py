@@ -1,14 +1,7 @@
 from flask import session, redirect, url_for, render_template, request
 from . import main
-from .forms import LoginForm
+from .forms import LoginForm, NewGameForm
 from Game import *
-
-class webApp:
-    url = "localhost:5000"
-    minGuessingTime = 60
-    maxGuessingTime = 120
-    timeStep = 10
-
 
 players = []
 
@@ -20,7 +13,7 @@ def home():
     if form.validate_on_submit():
         session['name'] = form.name.data
         if not form.game_id.data:
-            session['game_id'] = 1 # TODO in future get random game here
+            session['game_id'] = 1  # TODO in future get random game here
         else:
             session['game_id'] = form.game_id.data
         return redirect(url_for('main.game'))
@@ -30,11 +23,19 @@ def home():
     return render_template('index.html', form=form)
 
 
-@main.route('/newGame')
+@main.route('/newGame', methods=['GET', 'POST'])
 def newGame():
-    _webApp = webApp()
-    return render_template('new.html', params=_webApp)
-
+    form = NewGameForm()
+    if form.validate_on_submit():
+        session['name'] = form.name.data
+        form.game_id.data = 1  # TODO here create new game
+        session['game_id'] = form.game_id.data
+        game = Game(waiting_time=form.waiting_time.data, game_id=form.game_id.data, creator_name=form.name.data)
+        return redirect(url_for('main.game'))
+    elif request.method == 'GET':
+        form.name.data = session.get('name', '')
+        form.game_id.data = session.get('game_id', '')
+    return render_template('new.html', form=form)
 
 @main.route('/game', defaults={'game_id': None})
 @main.route('/game/<game_id>')  # This normal user link to the specified game
