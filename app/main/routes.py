@@ -38,6 +38,7 @@ def newGame():
         session.clear()
     return render_template('new.html', form=form)
 
+
 @main.route('/game', defaults={'game_id': None})
 @main.route('/game/<game_id>')  # This normal user link to the specified game
 def game(game_id=None):  # TODO: Check here if the game exists in database
