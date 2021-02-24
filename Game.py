@@ -13,10 +13,17 @@ class Player:
     def CheckIsNameUnique(self):
         return True
 
-class Game:
-    def __init__(self):
-        self.id = 1
-        self.players = list[Player]
 
+class Game:
+    minGuessingTime = 60
+    maxGuessingTime = 120
+    timeStep = 10
+    gameId = None
+    waitingTime = None
+    Players = []
+
+    def __init__(self, waiting_time, game_id, creator_name):
+        self.gameId = game_id
+        self.Players.append(Player(creator_name))
 
 
