@@ -1,7 +1,7 @@
 from flask import session, redirect, url_for, render_template, request
 from . import main
 from .forms import LoginForm
-
+from Game import *
 
 class webApp:
     url = "localhost:5000"
@@ -43,8 +43,11 @@ def game(game_id=None):  # TODO: Check here if the game exists in database
     if (game_id == None):  # TODO: Find newest game ID and route to this game
         game_id = session.get('game_id', '')
 
-    players = []  # list of players, pull it from database
     name = session.get('name', '')
+
+    player = Player(name=name)
+    players = []  # list of players, pull it from database
+    players.append(player)
     if name == '' or game_id == '':
         return redirect(url_for('main.home'))
     return render_template('game.html', game_id=game_id, players=players, name=name)

@@ -2,10 +2,10 @@
 class Player:
 
     def __init__(self, name):
-        self.nickName = "player"
+        self.nickName = name
         self.points = 0
         self.currentGameId = 0
-        return self.CheckIsNameUnique()
+        return
 
     def isDrawing(self):
         return False
