@@ -19,9 +19,12 @@ class LoginForm(FlaskForm):
             raise ValidationError("The room does not exist")
 
 
-class NewGameForm(LoginForm):
+class NewGameForm(FlaskForm):
     values = []
-    for o in range(Game.minGuessingTime +  Game.timeStep, Game.maxGuessingTime, Game.timeStep):
+    for o in range(Game.minGuessingTime + Game.timeStep, Game.maxGuessingTime, Game.timeStep):
         values.append(o)
 
+    name = StringField('Name', validators=[DataRequired()])
     waiting_time = SelectField(u'Waiting Time', choices=values)
+    submit = SubmitField('Create game')
+
