@@ -19,7 +19,10 @@ def home():
     form = LoginForm()
     if form.validate_on_submit():
         session['name'] = form.name.data
-        session['game_id'] = form.game_id.data
+        if not form.game_id.data:
+            session['game_id'] = 1 # TODO in future get random game here
+        else:
+            session['game_id'] = form.game_id.data
         return redirect(url_for('main.game'))
     elif request.method == 'GET':
         form.name.data = session.get('name', '')
