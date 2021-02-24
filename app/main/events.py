@@ -1,6 +1,7 @@
 from flask import session
 from flask_socketio import emit, join_room, leave_room
 from .. import socketio
+from app import *
 
 
 @socketio.on('joined', namespace='/game')
@@ -10,6 +11,15 @@ def joined(message):
     game_id = session.get('game_id')
     join_room(game_id)
     emit('status', {'msg': session.get('name') + ' has entered the room.'}, room=game_id)
+
+
+@socketio.on('timeUpdate', namespace='/game')
+def time_update(message):
+    """Sent by server every second
+    A status message is broadcast to all people in the room."""
+    game_id = 1;
+    global timer
+    emit('status', {'msg': timer}, room=game_id)
 
 
 @socketio.on('text', namespace='/game')

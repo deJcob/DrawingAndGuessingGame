@@ -1,4 +1,3 @@
-
 class Player:
 
     def __init__(self, name):
@@ -21,6 +20,7 @@ class Game:
     gameId = None
     waitingTime = None
     Players = []
+    timer = 0
 
     def __init__(self, waiting_time, game_id, creator_name):
         self.gameId = game_id

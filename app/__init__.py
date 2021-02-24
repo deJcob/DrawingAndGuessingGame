@@ -3,6 +3,7 @@ from flask_socketio import SocketIO
 
 socketio = SocketIO()
 
+
 def create_app(debug=False):
     """Create an application."""
     app = Flask(__name__)
@@ -11,6 +12,9 @@ def create_app(debug=False):
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    global timer
+    timer = 0
 
     socketio.init_app(app)
     return app

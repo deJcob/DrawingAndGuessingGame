@@ -2,6 +2,7 @@ from flask import session, redirect, url_for, render_template, request
 from . import main
 from .forms import LoginForm, NewGameForm
 from Game import *
+from app import *
 
 players = []
 
@@ -51,6 +52,7 @@ def game(game_id=None):  # TODO: Check here if the game exists in database
     players.append(player)
     if name == '' or game_id == '':
         return redirect(url_for('main.home'))
+
     return render_template('game.html', game_id=game_id, players=players, name=name)
 
 
