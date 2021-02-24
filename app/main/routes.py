@@ -3,12 +3,34 @@ from . import main
 from .forms import LoginForm, NewGameForm
 from Game import *
 from app import *
+import sqlite3
 
 players = []
-
+DATABASE = 'database.db'
 
 @main.route('/', methods=['GET', 'POST'])
 def home():
+    conn = sqlite3.connect(DATABASE)
+    # Stworzenie tabeli w bazie danych
+    conn.execute('CREATE TABLE IF NOT EXISTS words (id INTEGER PRIMARY KEY, word TEXT)')
+    conn.execute('CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, number_of_players INTEGER , time INTEGER)')
+    # Dodanie pozycji do tabeli
+    cur = conn.cursor()
+    cur.execute("SELECT word FROM words WHERE id=1")
+    exists = cur.fetchall()
+    if exists == 'apple':
+        cur.execute("INSERT INTO words (id, word) VALUES (1, 'apple')")
+        cur.execute("INSERT INTO words (id, word) VALUES (2, 'egg')")
+        cur.execute("INSERT INTO words (id, word) VALUES (3, 'sun')")
+        cur.execute("INSERT INTO words (id, word) VALUES (4, 'crossbow')")
+        cur.execute("INSERT INTO words (id, word) VALUES (5, 'house')")
+        cur.execute("INSERT INTO words (id, word) VALUES (7, 'dog')")
+        cur.execute("INSERT INTO words (id, word) VALUES (8, 'mirror')")
+        cur.execute("INSERT INTO words (id, word) VALUES (9, 'tree')")
+        cur.execute("INSERT INTO words (id, word) VALUES (10, 'doctor')")
+        conn.commit()
+    # Zakończenie połączenia z bazą danych
+    conn.close()
     """Login form to enter a room."""
     form = LoginForm()
     if form.validate_on_submit():
