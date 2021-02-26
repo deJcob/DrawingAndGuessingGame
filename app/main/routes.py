@@ -12,14 +12,14 @@ DATABASE = 'database.db'
 @main.route('/', methods=['GET', 'POST'])
 def home():
     conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
     # Stworzenie tabeli w bazie danych
+
     conn.execute('CREATE TABLE IF NOT EXISTS words (id INTEGER, word TEXT)')
     conn.execute('CREATE TABLE IF NOT EXISTS games (id INTEGER, number_of_players INTEGER , time INTEGER)')
     # Dodanie pozycji do tabeli
-    cur = conn.cursor()
-    cur.execute("SELECT word FROM words WHERE id=1")
-    exists = cur.fetchall()
-    if exists == 'apple':
+    cur.execute('SELECT word FROM words WHERE id=1')
+    if (cur.fetchone()[0]=='apple')==0:
         cur.execute("INSERT INTO words (id, word) VALUES (1, 'apple')")
         cur.execute("INSERT INTO words (id, word) VALUES (2, 'egg')")
         cur.execute("INSERT INTO words (id, word) VALUES (3, 'sun')")
